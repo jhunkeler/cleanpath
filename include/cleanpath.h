@@ -1,6 +1,32 @@
 #ifndef CLEANPATH_CLEANPATH_H
 #define CLEANPATH_CLEANPATH_H
 
+// Define some platform detection shortcuts
+#define OS_DARWIN 0
+#define OS_WINDOWS 0
+#define OS_LINUX 0
+#define OS_SUPPORTED 0
+
+#if defined(__APPLE__) && defined(__MACH__)
+#   undef OS_DARWIN
+#   define OS_DARWIN 1
+#   undef OS_SUPPORTED
+#   define OS_SUPPORTED 1
+
+#elif defined(_WIN32)
+#   undef OS_WINDOWS
+#   define OS_WINDOWS 1
+
+#elif defined(__linux) || defined(__linux__)
+#   undef OS_LINUX
+#   define OS_LINUX 1
+#   undef OS_SUPPORTED
+#   define OS_SUPPORTED 1
+#endif
+
+#include <stdlib.h>
+#include <string.h>
+
 #define CLEANPATH_VERSION "0.1.0"
 #define CLEANPATH_FILTER_NONE -1
 #define CLEANPATH_FILTER_EXACT 0
@@ -11,11 +37,11 @@
 #define CLEANPATH_SEP ":"
 
 struct CleanPath {
-    char *data;                       // Pointer to the path string
-    size_t data_len;                  // Length of the path string
-    char *sep;                        // Pointer to the separator used to split the data string
+    char *data;                      // Pointer to the path string
+    size_t data_len;                 // Length of the path string
+    char *sep;                       // Pointer to the separator used to split the data string
     char *part[CLEANPATH_PART_MAX];  // Array of pointers to path elements
-    size_t part_nelem;                // Total number of elements in part array
+    size_t part_nelem;               // Total number of elements in part array
 };
 
 // Prototypes

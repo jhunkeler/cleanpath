@@ -4,6 +4,10 @@
 #include <regex.h>
 #include "cleanpath.h"
 
+#if OS_LINUX
+#include <linux/limits.h>
+#endif
+
 /**
  * Split path into parts by sep
  * @param path a string (e.g. "/path1:/path2:/pathN")
