@@ -7,6 +7,10 @@ set(LIB_SOURCES lib/cleanpath.c)
 set(MAIN_SOURCES src/main.c)
 set(INCLUDES include/cleanpath.h)
 
+include (CTest)
+enable_testing()
+add_subdirectory(tests)
+
 add_library(cleanpath_static STATIC ${LIB_SOURCES})
 set_target_properties(cleanpath_static PROPERTIES PUBLIC_HEADER ${INCLUDES})
 set_target_properties(cleanpath_static PROPERTIES OUTPUT_NAME cleanpath)
