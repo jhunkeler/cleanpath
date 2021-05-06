@@ -1,6 +1,9 @@
 # cleanpath
 
+[![CMake](https://github.com/jhunkeler/cleanpath/actions/workflows/cmake.yml/badge.svg)](https://github.com/jhunkeler/cleanpath/actions/workflows/cmake.yml)
+
 `cleanpath` is a utility that filters unwanted elements from an environment variable.
+
 
 # Installation
 
