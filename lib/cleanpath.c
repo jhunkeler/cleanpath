@@ -1,19 +1,20 @@
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
 #include <regex.h>
-#include "cleanpath.h"
 #include "config.h"
+#include "cleanpath.h"
 
 #if OS_LINUX
-#ifdef HAVE_SYS_LIMIT_H
+#if HAVE_SYS_LIMIT_H
 #include <sys/limits.h>
 #endif  // HAVE_SYS_LIMIT_H
 
-#ifdef HAVE_LINUX_LIMIT_H
+#if HAVE_LINUX_LIMIT_H
 #include <linux/limits.h>
 #endif  // HAVE_LINUX_LIMIT_H
-#endif  // OS_LINUX
+#else
+#include <limits.h>
+#endif
 
 /**
  * Split path into parts by sep
