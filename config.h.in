@@ -1,0 +1,7 @@
+#ifndef CLEAN_PATH_CONFIG_H
+#define CLEAN_PATH_CONFIG_H
+
+#cmakedefine HAVE_SYS_LIMIT_H @HAVE_SYS_LIMIT_H@
+#cmakedefine HAVE_LINUX_LIMIT_H @HAVE_LINUX_LIMIT_H@
+
+#endif

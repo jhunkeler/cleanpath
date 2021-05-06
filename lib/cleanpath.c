@@ -3,9 +3,14 @@
 #include <limits.h>
 #include <regex.h>
 #include "cleanpath.h"
+#include "config.h"
 
 #if OS_LINUX
+#ifdef HAVE_SYS_LIMIT_H
+#include <sys/limits.h>
+#elif HAVE_LINUX_LIMIT_H
 #include <linux/limits.h>
+#endif
 #endif
 
 /**
