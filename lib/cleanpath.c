@@ -1,8 +1,11 @@
 #include <stdlib.h>
 #include <string.h>
-#include <regex.h>
 #include "config.h"
 #include "cleanpath.h"
+
+#if !OS_WINDOWS
+#include <regex.h>
+#endif
 
 /**
  * Split path into parts by sep
