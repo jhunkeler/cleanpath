@@ -35,10 +35,13 @@
 #define CLEANPATH_PART_MAX 1024
 #define CLEANPATH_VAR "PATH"
 #define CLEANPATH_SEP ":"
+#define CLEANPATH_MSG_NOAVAIL ""
 
 #if OS_WINDOWS
 #undef CLEANPATH_SEP
 #define CLEANPATH_SEP ";"
+#undef CLEANPATH_MSG_NOAVAIL
+#define CLEANPATH_MSG_NOAVAIL " [not implemented] "
 #endif
 
 struct CleanPath {
