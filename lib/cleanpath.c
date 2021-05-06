@@ -8,10 +8,12 @@
 #if OS_LINUX
 #ifdef HAVE_SYS_LIMIT_H
 #include <sys/limits.h>
-#elif HAVE_LINUX_LIMIT_H
+#endif  // HAVE_SYS_LIMIT_H
+
+#ifdef HAVE_LINUX_LIMIT_H
 #include <linux/limits.h>
-#endif
-#endif
+#endif  // HAVE_LINUX_LIMIT_H
+#endif  // OS_LINUX
 
 /**
  * Split path into parts by sep
