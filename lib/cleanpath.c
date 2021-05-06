@@ -15,15 +15,27 @@ struct CleanPath *cleanpath_init(const char *path, const char *sep) {
     struct CleanPath *result;
     char *elem;
     size_t i;
+    result = NULL;
 
     if (!path || !sep) {
-        return NULL;
+        goto cleanpath_init__failure;
     }
 
     result = calloc(1, sizeof(*result));
+    if (result == NULL) {
+        goto cleanpath_init__failure;
+    }
+
     result->data = strdup(path);
+    if (result->data == NULL) {
+        return NULL;
+    }
+
     result->data_len = strlen(result->data) + 2; // + 2 to handle an empty PATH
     result->sep = strdup(sep);
+    if (result->sep == NULL) {
+        goto cleanpath_init__failure;
+    }
 
     // Split string by separator
     elem = strtok(result->data, sep);
@@ -33,6 +45,7 @@ struct CleanPath *cleanpath_init(const char *path, const char *sep) {
     }
     result->part_nelem = i;
 
+    cleanpath_init__failure:
     return result;
 }
 
@@ -82,6 +95,10 @@ char *cleanpath_read(struct CleanPath *path) {
     char *result;
 
     result = calloc(path->data_len, sizeof(char));
+    if (result == NULL) {
+        goto cleanpath_read__failure;
+    }
+
     for (size_t i = 0; path->part[i] != NULL; i++) {
         // Ignore filtered paths
         if (*path->part[i] == '\0') {
@@ -95,6 +112,7 @@ char *cleanpath_read(struct CleanPath *path) {
         }
     }
 
+    cleanpath_read__failure:
     return result;
 }
 
