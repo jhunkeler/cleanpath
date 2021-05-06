@@ -62,8 +62,10 @@ struct CleanPath *cleanpath_init(const char *path, const char *sep) {
  * @note CLEANPATH_FILTER_EXACT is the default mode
  */
 void cleanpath_filter(struct CleanPath *path, unsigned mode, const char *pattern) {
-    int match;
+#if !OS_WINDOWS
     regex_t regex;
+#endif
+    int match;
 
     for (size_t i = 0; path->part[i]; i++) {
         match = 0;
