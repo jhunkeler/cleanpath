@@ -45,10 +45,12 @@ const char *inputs[MAX_MODE][MAX_PART][MAX_RECORD] = {
         "bin",
         NULL
     },
+#if !OS_WINDOWS
     {   // Filter regex
         ".*",
         NULL
     },
+#endif
 };
 
 struct TestResult {

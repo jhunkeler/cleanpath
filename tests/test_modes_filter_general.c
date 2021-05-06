@@ -39,12 +39,14 @@ const char *inputs[MAX_MODE][MAX_PART][MAX_RECORD] = {
         "intentionally bad",      // test non-existent pattern in string
         NULL
     },
+#if !OS_WINDOWS
     {   // Filter regex
         "^/opt/local/.*",
         "intentionally bad",      // test non-existent pattern in string
         "intentionally worse (",  // cause total regex failure with unmatched parenthesis
         NULL
     },
+#endif
 };
 const char *expected = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/Apple/usr/bin";
 
