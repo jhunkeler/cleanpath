@@ -23,7 +23,9 @@ unsigned modes[MAX_MODE] = {
 char *modes_str[MAX_MODE] = {
     "exact",
     "loose",
+#if !OS_WINDOWS
     "regex",
+#endif
 };
 
 const char *inputs[MAX_MODE][MAX_PART][MAX_RECORD] = {
