@@ -15,7 +15,9 @@
 unsigned modes[MAX_MODE] = {
     CLEANPATH_FILTER_EXACT,
     CLEANPATH_FILTER_LOOSE,
+#if !OS_WINDOWS
     CLEANPATH_FILTER_REGEX,
+#endif
 };
 
 char *modes_str[MAX_MODE] = {
