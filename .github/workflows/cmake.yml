@@ -20,11 +20,15 @@ jobs:
         include:
           - name: Debug (Linux)
             os: ubuntu-latest
-            build_type: Release
+            build_type: Debug
             
           - name: Debug (MacOS)
             os: macos-latest
-            build_type: Release
+            build_type: Debug
+
+          - name: Debug (Windows)
+            os: windows-latest
+            build_type: Debug
             
           - name: Release (Linux)
             os: ubuntu-latest
@@ -33,6 +37,11 @@ jobs:
           - name: Release (MacOS)
             os: macos-latest
             build_type: Release
+
+          - name: Release (Windows)
+            os: windows-latest
+            build_type: Release
+
 
     steps:
     - uses: actions/checkout@v2

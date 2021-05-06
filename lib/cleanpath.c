@@ -1,8 +1,12 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <regex.h>
 #include "config.h"
 #include "cleanpath.h"
+
+#if !OS_WINDOWS
+#include <regex.h>
+#endif
 
 /**
  * Split path into parts by sep
@@ -58,8 +62,10 @@ struct CleanPath *cleanpath_init(const char *path, const char *sep) {
  * @note CLEANPATH_FILTER_EXACT is the default mode
  */
 void cleanpath_filter(struct CleanPath *path, unsigned mode, const char *pattern) {
-    int match;
+#if !OS_WINDOWS
     regex_t regex;
+#endif
+    int match;
 
     for (size_t i = 0; path->part[i]; i++) {
         match = 0;
@@ -68,11 +74,15 @@ void cleanpath_filter(struct CleanPath *path, unsigned mode, const char *pattern
                 match = strstr(path->part[i], pattern) != NULL ? 1 : 0;
                 break;
             case CLEANPATH_FILTER_REGEX:
+#if !OS_WINDOWS
                 if (regcomp(&regex, pattern, REG_EXTENDED | REG_NOSUB) != 0) {
                     return;
                 }
                 match = regexec(&regex, path->part[i], 0, NULL, 0) == 0 ? 1 : 0;
                 regfree(&regex);
+#else
+                fprintf(stderr, "WARNING: --regex|-r is not implemented on Windows. Using default filter mode.\n");
+#endif
                 break;
             case CLEANPATH_FILTER_EXACT:
             default:

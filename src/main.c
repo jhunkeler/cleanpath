@@ -52,7 +52,7 @@ static void show_usage() {
     printf("  --version    -V    Displays the program's version\n");
     printf("  --exact      -e    Filter when pattern is an exact match (default)\n");
     printf("  --loose      -l    Filter when any part of the pattern matches\n");
-    printf("  --regex      -r    Filter matches with (Extended) Regular Expressions\n");
+    printf("  --regex      -r    Filter matches with (Extended) Regular Expressions " CLEANPATH_MSG_NOAVAIL "\n");
     printf("  --sep [str]  -s    Use custom path separator (default: ':')\n");
     printf("  --env [str]  -E    Use custom environment variable (default: PATH)\n");
 }

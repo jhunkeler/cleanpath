@@ -6,16 +6,26 @@
 #define MAX_PART CLEANPATH_PART_MAX
 #define MAX_RECORD 255
 
+#if OS_WINDOWS
+// Disable regex filter test
+#undef MAX_MODE
+#define MAX_MODE 2
+#endif
+
 unsigned modes[MAX_MODE] = {
     CLEANPATH_FILTER_EXACT,
     CLEANPATH_FILTER_LOOSE,
+#if !OS_WINDOWS
     CLEANPATH_FILTER_REGEX,
+#endif
 };
 
 char *modes_str[MAX_MODE] = {
     "exact",
     "loose",
+#if !OS_WINDOWS
     "regex",
+#endif
 };
 
 const char *inputs[MAX_MODE][MAX_PART][MAX_RECORD] = {
@@ -35,10 +45,12 @@ const char *inputs[MAX_MODE][MAX_PART][MAX_RECORD] = {
         "bin",
         NULL
     },
+#if !OS_WINDOWS
     {   // Filter regex
         ".*",
         NULL
     },
+#endif
 };
 
 struct TestResult {
