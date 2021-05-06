@@ -102,7 +102,7 @@ char *cleanpath_read(struct CleanPath *path) {
         strcat(result, path->part[i]);
 
         // Do not append path separator on final element
-        if (path->part[i + 1] != NULL) {
+        if (path->part[i + 1] != NULL && *path->part[i + 1] != '\0') {
             strcat(result, path->sep);
         }
     }
