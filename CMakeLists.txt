@@ -8,9 +8,6 @@ set(LIB_SOURCES lib/cleanpath.c)
 set(MAIN_SOURCES src/main.c)
 set(INCLUDES include/cleanpath.h)
 
-CHECK_INCLUDE_FILE(sys/limits.h HAVE_SYS_LIMIT_H)
-CHECK_INCLUDE_FILE(linux/limits.h HAVE_LINUX_LIMIT_H)
-
 configure_file ("${PROJECT_SOURCE_DIR}/config.h.in"
                 "${PROJECT_BINARY_DIR}/include/config.h")
 

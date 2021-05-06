@@ -4,18 +4,6 @@
 #include "config.h"
 #include "cleanpath.h"
 
-#if OS_LINUX
-#if HAVE_SYS_LIMIT_H
-#include <sys/limits.h>
-#endif  // HAVE_SYS_LIMIT_H
-
-#if HAVE_LINUX_LIMIT_H
-#include <linux/limits.h>
-#endif  // HAVE_LINUX_LIMIT_H
-#else
-#include <limits.h>
-#endif
-
 /**
  * Split path into parts by sep
  * @param path a string (e.g. "/path1:/path2:/pathN")
@@ -33,7 +21,7 @@ struct CleanPath *cleanpath_init(const char *path, const char *sep) {
     }
 
     result = calloc(1, sizeof(*result));
-    result->data = strndup(path, ARG_MAX);
+    result->data = strdup(path);
     result->data_len = strlen(result->data) + 2; // + 2 to handle an empty PATH
     result->sep = strdup(sep);
 

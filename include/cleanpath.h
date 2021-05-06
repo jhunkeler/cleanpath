@@ -36,6 +36,11 @@
 #define CLEANPATH_VAR "PATH"
 #define CLEANPATH_SEP ":"
 
+#if OS_WINDOWS
+#undef CLEANPATH_SEP
+#define CLEANPATH_SEP ";"
+#endif
+
 struct CleanPath {
     char *data;                      // Pointer to the path string
     size_t data_len;                 // Length of the path string
