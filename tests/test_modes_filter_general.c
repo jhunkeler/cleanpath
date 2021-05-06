@@ -5,6 +5,12 @@
 #define MAX_PART CLEANPATH_PART_MAX
 #define MAX_RECORD 255
 
+#if OS_WINDOWS
+// Disable regex filter test
+#undef MAX_MODE
+#define MAX_MODE 2
+#endif
+
 unsigned modes[MAX_MODE] = {
     CLEANPATH_FILTER_EXACT,
     CLEANPATH_FILTER_LOOSE,
