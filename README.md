@@ -21,6 +21,7 @@ $ make install
 usage: cleanpath [-hVelrsv] [pattern ...]
   --help       -h    Displays this help message
   --version    -V    Displays the program's version
+  --list             Format output as a list
   --exact      -e    Filter when pattern is an exact match (default)
   --loose      -l    Filter when any part of the pattern matches
   --regex      -r    Filter matches with (Extended) Regular Expressions

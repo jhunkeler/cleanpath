@@ -43,7 +43,7 @@ struct CleanPath *cleanpath_init(const char *path, const char *sep) {
 
     // Split string by separator
     elem = strtok(result->data, sep);
-    for (i = 0; elem != NULL; i++) {
+    for (i = 0; i < CLEANPATH_PART_MAX && elem != NULL; i++) {
         result->part[i] = elem;
         elem = strtok(NULL, sep);
     }
@@ -67,7 +67,7 @@ void cleanpath_filter(struct CleanPath *path, unsigned mode, const char *pattern
 #endif
     int match;
 
-    for (size_t i = 0; path->part[i]; i++) {
+    for (size_t i = 0; i < CLEANPATH_PART_MAX && path->part[i]; i++) {
         match = 0;
         switch(mode) {
             case CLEANPATH_FILTER_LOOSE:
@@ -109,7 +109,7 @@ char *cleanpath_read(struct CleanPath *path) {
         goto cleanpath_read__failure;
     }
 
-    for (size_t i = 0; path->part[i] != NULL; i++) {
+    for (size_t i = 0; i < CLEANPATH_PART_MAX && path->part[i] != NULL; i++) {
         // Ignore filtered paths
         if (*path->part[i] == '\0') {
             continue;
