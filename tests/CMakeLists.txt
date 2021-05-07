@@ -20,3 +20,28 @@ foreach(file ${files})
 		PROPERTIES
 		TIMEOUT 120)
 endforeach()
+
+# For these tests to pass TESTVAR_WIN (Windows) and TESTVAR_NIX (Unix-like)
+# must be set in the runtime environment prior to execution. For some
+# reason environment variables defined here are not passed on to child
+# processes.
+set(TEST_SETUP -E TESTVAR)
+
+if(${CMAKE_SYSTEM_NAME} EQUAL WINDOWS)
+    set(TEST_SETUP ${TEST_SETUP}_WIN)
+	set(exec ${CMAKE_BINARY_DIR}/cleanpath.exe)
+
+	add_test(cmd_arg_exact ${exec} --exact ${TEST_SETUP} C:\\usr\\bin)
+	add_test(cmd_arg_loose ${exec} --loose ${TEST_SETUP} C:\\usr\\bin)
+else()
+	set(TEST_SETUP ${TEST_SETUP}_NIX)
+	set(exec ${CMAKE_BINARY_DIR}/cleanpath)
+
+	add_test(cmd_arg_exact ${exec} ${TEST_SETUP} --exact /usr/bin)
+	add_test(cmd_arg_loose ${exec} ${TEST_SETUP} --loose /usr/bin)
+	add_test(cmd_arg_regex ${exec} ${TEST_SETUP} --regex /usr/bin)
+endif()
+
+add_test(cmd_arg_help ${exec} --help)
+add_test(cmd_arg_version ${exec} --version)
+add_test(cmd_arg_list ${exec} --list)

@@ -7,8 +7,8 @@ on:
     branches: [ master ]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+  TESTVAR_NIX: "/usr/local/bin:/usr/bin:/bin"
+  TESTVAR_WIN: "C:\usr\local\bin;C:\usr\bin;C:\bin"
 
 jobs:
   tests:
