@@ -16,6 +16,8 @@
 #elif defined(_WIN32)
 #   undef OS_WINDOWS
 #   define OS_WINDOWS 1
+#   undef OS_SUPPORTED
+#   define OS_SUPPORTED 1
 
 #elif defined(__linux) || defined(__linux__)
 #   undef OS_LINUX
@@ -24,6 +26,7 @@
 #   define OS_SUPPORTED 1
 #endif
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
