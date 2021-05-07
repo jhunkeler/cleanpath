@@ -10,7 +10,7 @@
 // Global program path
 static char *program;
 
-static int is_valid_arg(char **args, char *s) {
+int is_valid_arg(char **args, char *s) {
     int match;
 
     match = 0;
@@ -29,14 +29,38 @@ static int is_valid_arg(char **args, char *s) {
     return match;
 }
 
-
-static char *getenv_ex(char *s) {
+char *getenv_ex(char *s) {
     char *env_var;
     env_var = getenv(s);
     if (!env_var || !strlen(env_var)) {
         return NULL;
     }
     return env_var;
+}
+
+void show_listing(struct CleanPath *path) {
+    if (path == NULL) {
+        return;
+    }
+
+    for (size_t i = 0; i < CLEANPATH_PART_MAX && path->part[i] != NULL; i++) {
+        if (*path->part[i] == '\0') {
+            continue;
+        }
+        puts(path->part[i]);
+    }
+}
+
+void show_path(struct CleanPath *path) {
+    char *result;
+
+    result = cleanpath_read(path);
+    if (result == NULL) {
+        return;
+    }
+
+    printf("%s\n", result);
+    free(result);
 }
 
 static void show_version() {
@@ -50,6 +74,7 @@ static void show_usage() {
     printf("usage: %s [-hVelrsv] [pattern ...]\n", bname ? bname + 1 : program);
     printf("  --help       -h    Displays this help message\n");
     printf("  --version    -V    Displays the program's version\n");
+    printf("  --list             Format output as a list\n");
     printf("  --exact      -e    Filter when pattern is an exact match (default)\n");
     printf("  --loose      -l    Filter when any part of the pattern matches\n");
     printf("  --regex      -r    Filter matches with (Extended) Regular Expressions " CLEANPATH_MSG_NOAVAIL "\n");
@@ -63,6 +88,7 @@ int main(int argc, char *argv[]) {
     char *sys_var;
     char *result;
     size_t pattern_nelem;
+    int do_listing;
     int filter_mode;
     int args_invalid;
     char *pattern[CLEANPATH_PART_MAX];
@@ -71,6 +97,7 @@ int main(int argc, char *argv[]) {
     result = NULL;
     sys_var = NULL;
     sep = CLEANPATH_SEP;
+    do_listing = 0;
     filter_mode = CLEANPATH_FILTER_NONE;
     memset(pattern, 0, sizeof(pattern) / sizeof(char *));
     pattern_nelem = 0;
@@ -79,6 +106,7 @@ int main(int argc, char *argv[]) {
     char *args_valid[] = {
             "--help", "-h",
             "--version", "-V",
+            "--list",
             "--exact", "-e",
             "--loose", "-l",
             "--regex", "-r",
@@ -103,6 +131,9 @@ int main(int argc, char *argv[]) {
         if (ARGM("--version") || ARGM("-V")) {
             show_version();
             exit(0);
+        }
+        if (ARGM("--list")) {
+            do_listing = 1;
         }
         if (ARGM("--exact") || ARGM("-e")) {
             filter_mode = CLEANPATH_FILTER_EXACT;
@@ -151,16 +182,18 @@ int main(int argc, char *argv[]) {
     }
 
     // Remove patterns from sys_var
-    for (size_t i = 0; pattern[i] != NULL; i++) {
+    for (size_t i = 0; i < CLEANPATH_PART_MAX && pattern[i] != NULL; i++) {
         cleanpath_filter(path, filter_mode, pattern[i]);
     }
 
     // Print filtered result
-    result = cleanpath_read(path);
-    printf("%s\n", result);
+    if (do_listing) {
+        show_listing(path);
+    } else {
+        show_path(path);
+    }
 
     // Clean up
-    free(result);
     cleanpath_free(path);
 
     return 0;
