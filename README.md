@@ -18,7 +18,7 @@ $ make install
 # Usage
 
 ```shell
-usage: cleanpath [-hVelrsv] [pattern ...]
+usage: cleanpath [-hVelrsE] [pattern ...]
   --help       -h    Displays this help message
   --version    -V    Displays the program's version
   --list             Format output as a list
