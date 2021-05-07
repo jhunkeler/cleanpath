@@ -103,6 +103,7 @@ void cleanpath_filter(struct CleanPath *path, unsigned mode, const char *pattern
  */
 char *cleanpath_read(struct CleanPath *path) {
     char *result;
+    size_t result_len;
 
     result = calloc(path->data_len, sizeof(char));
     if (result == NULL) {
@@ -115,11 +116,12 @@ char *cleanpath_read(struct CleanPath *path) {
             continue;
         }
         strcat(result, path->part[i]);
+        strcat(result, path->sep);
+    }
 
-        // Do not append path separator on final element
-        if (path->part[i + 1] != NULL && *path->part[i + 1] != '\0') {
-            strcat(result, path->sep);
-        }
+    result_len = strlen(result);
+    if (result_len) {
+        result[result_len - 1] = '\0';
     }
 
     cleanpath_read__failure:
