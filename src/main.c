@@ -145,6 +145,9 @@ int main(int argc, char *argv[]) {
         }
         if (ARGM("--regex") || ARGM("-r")) {
             filter_mode = CLEANPATH_FILTER_REGEX;
+#if OS_WINDOWS
+            fprintf(stderr, "WARNING: --regex|-r is not implemented on Windows. Using default filter mode.\n");
+#endif
             continue;
         }
         if (ARGM("--sep") || ARGM("-s")) {

@@ -80,8 +80,6 @@ void cleanpath_filter(struct CleanPath *path, unsigned mode, const char *pattern
                 }
                 match = regexec(&regex, path->part[i], 0, NULL, 0) == 0 ? 1 : 0;
                 regfree(&regex);
-#else
-                fprintf(stderr, "WARNING: --regex|-r is not implemented on Windows. Using default filter mode.\n");
 #endif
                 break;
             case CLEANPATH_FILTER_EXACT:
