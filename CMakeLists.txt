@@ -40,5 +40,16 @@ install(TARGETS cleanpath_shared
 install(TARGETS cleanpath
         RUNTIME DESTINATION bin)
 
-install(FILES ${CMAKE_SOURCE_DIR}/docs/man/cleanpath.1
-        DESTINATION share/man/man1 COMPONENT doc)
+
+file(GLOB MAN1_FILES ${CMAKE_SOURCE_DIR}/docs/man/*.1)
+file(GLOB MAN3_FILES ${CMAKE_SOURCE_DIR}/docs/man/*.3)
+
+foreach(file ${MAN1_FILES})
+    install(FILES ${file}
+            DESTINATION share/man/man1 COMPONENT doc)
+endforeach()
+
+foreach(file ${MAN3_FILES})
+    install(FILES ${file}
+            DESTINATION share/man/man3 COMPONENT doc)
+endforeach()
