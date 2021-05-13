@@ -7,7 +7,7 @@ include(CTest)
 set(CMAKE_C_STANDARD 99)
 set(LIB_SOURCES lib/cleanpath.c)
 set(MAIN_SOURCES src/main.c)
-set(INCLUDES include/cleanpath.h)
+set(LIB_INCLUDES include/cleanpath/cleanpath.h)
 
 configure_file ("${PROJECT_SOURCE_DIR}/config.h.in"
                 "${PROJECT_BINARY_DIR}/include/config.h")
@@ -19,22 +19,22 @@ enable_testing()
 add_subdirectory(tests)
 
 add_library(cleanpath_static STATIC ${LIB_SOURCES})
-set_target_properties(cleanpath_static PROPERTIES PUBLIC_HEADER ${INCLUDES})
+set_target_properties(cleanpath_static PROPERTIES PUBLIC_HEADER ${LIB_INCLUDES})
 set_target_properties(cleanpath_static PROPERTIES OUTPUT_NAME cleanpath)
 
 add_library(cleanpath_shared SHARED ${LIB_SOURCES})
-set_target_properties(cleanpath_shared PROPERTIES PUBLIC_HEADER ${INCLUDES})
+set_target_properties(cleanpath_shared PROPERTIES PUBLIC_HEADER ${LIB_INCLUDES})
 set_target_properties(cleanpath_shared PROPERTIES OUTPUT_NAME cleanpath)
 
 add_executable(cleanpath ${MAIN_SOURCES})
 target_link_libraries(cleanpath cleanpath_static)
 
 install(TARGETS cleanpath_static
-        PUBLIC_HEADER DESTINATION include
+        PUBLIC_HEADER DESTINATION include/cleanpath
         LIBRARY DESTINATION lib)
 
 install(TARGETS cleanpath_shared
-        PUBLIC_HEADER DESTINATION include
+        PUBLIC_HEADER DESTINATION include/cleanpath
         LIBRARY DESTINATION lib)
 
 install(TARGETS cleanpath

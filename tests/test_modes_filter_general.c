@@ -1,4 +1,4 @@
-#include "cleanpath.h"
+#include "cleanpath/cleanpath.h"
 #include "framework.h"
 
 #define MAX_MODE 3

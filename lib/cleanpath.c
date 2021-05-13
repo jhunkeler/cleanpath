@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "config.h"
-#include "cleanpath.h"
+#include "cleanpath/cleanpath.h"
 
 #if !OS_WINDOWS
 #include <regex.h>

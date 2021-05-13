@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include "cleanpath.h"
+#include "cleanpath/cleanpath.h"
 
 // Make argument parsing less wordy
 #define ARGM(X) strcmp(argv[i], X) == 0
