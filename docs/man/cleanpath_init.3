@@ -1,0 +1,41 @@
+.TH "CLEANPATH_INIT" "3" "" "" "API"
+.SH NAME
+cleanpath_init \- Initialize a CleanPath structure
+.SH SYNOPSIS
+\f[B]#include <cleanpath/cleanpath.h>\f[R]
+.PP
+\f[B]struct CleanPath\f[R] {
+    // Pointer to the path string
+    \f[B]char *\f[I]data\f[R];
+
+    // Length of the path string
+    \f[B]size_t \f[I]data_len\f[R];
+
+    // Pointer to the separator used to split the data string
+    \f[B]char *\f[I]sep\f[R];
+
+    // Array of pointers to path elements
+    \f[B]char *\f[I]part[CLEANPATH_PART_MAX]\f[R];
+
+    // Total number of elements in part array
+    \f[B]size_t \f[I]part_nelem\f[R];
+
+};
+\f[R]
+.PP
+\f[B]struct CleanPath *cleanpath_init(const char *\f[I]path\f[B], const char *\f[I]sep\f[B])\f[R]
+.PP
+.SH DESCRIPTION
+Split string \f[I]path\f[R] into parts by string \f[I]sep\f[R]
+.PP
+.SH RETURN VALUE
+function returns a pointer to a \f[B]CleanPath\f[R] structure
+.PP
+.SH CONFORMING TO
+C99
+.PP
+.SH SEE ALSO
+\f[B]cleanpath_filter(3)\f[R],
+\f[B]cleanpath_read(3)\f[R],
+\f[B]cleanpath_free(3)\f[R]
+.PP

@@ -1,0 +1,24 @@
+.TH "CLEANPATH_READ" "3" "" "" "API"
+.SH NAME
+cleanpath_read \- Obtain filtered path string
+.SH SYNOPSIS
+\f[B]#include <cleanpath/cleanpath.h>\f[R]
+.PP
+\f[B]void cleanpath_read(struct CleanPath *\f[I]path\f[B])\f[R]
+.PP
+.SH DESCRIPTION
+Combine elements not filtered by \f[B]cleanpath_filter(3)\f[R]
+.PP
+.SH RETURNS
+a pointer a filtered path string
+.PP
+(must be freed by caller)
+.PP
+.SH CONFORMING TO
+C99
+.PP
+.SH SEE ALSO
+\f[B]cleanpath_init(3)\f[R],
+\f[B]cleanpath_filter(3)\f[R],
+\f[B]cleanpath_free(3)\f[R]
+.PP

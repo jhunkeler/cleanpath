@@ -1,0 +1,30 @@
+.TH "CLEANPATH_FILTER" "3" "" "" "API"
+.SH NAME
+cleanpath_filter \- Remove paths from a \f[B]CleanPath\f[R] structure
+.SH SYNOPSIS
+\f[B]#include <cleanpath/cleanpath.h>\f[R]
+.PP
+\f[B]void cleanpath_filter(struct CleanPath *\f[I]path\f[B], unsigned \f[I]mode\f[B], const char *\f[I]pattern\f[B])\f[R]
+.SS MODE FLAGS
+.PP
+\f[B]CLEANPATH_FILTER_EXACT\f[R] \- Match pattern exactly
+.PP
+\f[B]CLEANPATH_FILTER_LOOSE\f[R] \- Match pattern as substring
+.PP
+\f[B]CLEANPATH_FILTER_REGEX\f[R] \- Use (Extended) Regular Expressions
+
+.PP
+.SH DESCRIPTION
+Filter elements in \f[I]path->part\f[R] array by \f[I]pattern\f[R]
+.PP
+.SH RETURNS
+N/A
+.PP
+.SH CONFORMING TO
+C99
+.PP
+.SH SEE ALSO
+\f[B]cleanpath_init(3)\f[R],
+\f[B]cleanpath_read(3)\f[R],
+\f[B]cleanpath_free(3)\f[R]
+.PP
