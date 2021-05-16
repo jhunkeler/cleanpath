@@ -61,7 +61,7 @@ static int show_default_path() {
 #if OS_WINDOWS
     // I could not find anything in MSDN about dumping default path information.
     // The internet agrees "this" is "it" (XP/Vista/8/10):
-    strncpy(buf, "C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;", sizeof(buf));
+    strncpy(buf, "%SystemRoot%\\system32;%SystemRoot%;%SystemRoot%\\System32\\Wbem;", sizeof(buf));
 #elif HAVE_CONFSTR  // POSIX
     size_t cf_status;
     cf_status = confstr(_CS_PATH, buf, sizeof(buf));
