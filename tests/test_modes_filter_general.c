@@ -29,22 +29,22 @@ char *modes_str[MAX_MODE] = {
 
 const char *inputs[MAX_MODE][MAX_PART][MAX_RECORD] = {
     {   // Filter exact
-        "/opt/local/bin",
+        {"/opt/local/bin",
         "/opt/local/sbin",
         "intentionally bad",      // test non-existent pattern in string
-        NULL
+        NULL}
     },
     {   // Filter loose
-        "/opt/local",
+        {"/opt/local",
         "intentionally bad",      // test non-existent pattern in string
-        NULL
+        NULL}
     },
 #if !OS_WINDOWS
     {   // Filter regex
-        "^/opt/local/.*",
+        {"^/opt/local/.*",
         "intentionally bad",      // test non-existent pattern in string
         "intentionally worse (",  // cause total regex failure with unmatched parenthesis
-        NULL
+        NULL}
     },
 #endif
 };
