@@ -27,7 +27,7 @@ endforeach()
 # processes.
 set(TEST_SETUP -E TESTVAR)
 
-if(${CMAKE_SYSTEM_NAME} EQUAL WINDOWS)
+if(WIN32)
     set(TEST_SETUP ${TEST_SETUP}_WIN)
 	set(exec ${CMAKE_BINARY_DIR}/cleanpath.exe)
 
