@@ -18,6 +18,12 @@ configure_file ("${PROJECT_SOURCE_DIR}/config.h.in"
 include_directories(${PROJECT_BINARY_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
+if(MSVC)
+    add_compile_options(/W4)
+else()
+    add_compile_options(-Wall -Wextra)
+endif()
+
 enable_testing()
 add_subdirectory(tests)
 
