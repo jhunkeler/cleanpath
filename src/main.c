@@ -111,11 +111,11 @@ int main(int argc, char *argv[]) {
     struct CleanPath *path;
     char *sep;
     char *sys_var;
-    size_t pattern_nelem;
     int do_listing;
     int do_default_path;
     int filter_mode;
     int args_invalid;
+    size_t pattern_nelem;
     char *pattern[CLEANPATH_PART_MAX];
 
     program = argv[0];
@@ -124,8 +124,8 @@ int main(int argc, char *argv[]) {
     do_listing = 0;
     do_default_path = 0;
     filter_mode = CLEANPATH_FILTER_NONE;
-    memset(pattern, 0, sizeof(pattern) / sizeof(char *));
     pattern_nelem = 0;
+    memset(pattern, 0, (sizeof(pattern) / sizeof(char *)) * sizeof(char *));
 
     args_invalid = 0;
     char *args_valid[] = {
