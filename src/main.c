@@ -114,7 +114,6 @@ int main(int argc, char *argv[]) {
     int do_listing;
     int do_default_path;
     int filter_mode;
-    int args_invalid;
     size_t pattern_nelem;
     char *pattern[CLEANPATH_PART_MAX];
 
@@ -127,7 +126,6 @@ int main(int argc, char *argv[]) {
     pattern_nelem = 0;
     memset(pattern, 0, (sizeof(pattern) / sizeof(char *)) * sizeof(char *));
 
-    args_invalid = 0;
     char *args_valid[] = {
             "--help", "-h",
             "--version", "-V",
@@ -144,10 +142,6 @@ int main(int argc, char *argv[]) {
     for (int i = 1; i < argc; i++) {
         if (!is_valid_arg(args_valid, argv[i])) {
             fprintf(stderr, "Unknown option: %s\n", argv[i]);
-            args_invalid = 1;
-            continue;
-        }
-        if (args_invalid) {
             exit(1);
         }
         if (ARGM("--help") || ARGM("-h")) {
