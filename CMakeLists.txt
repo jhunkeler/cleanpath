@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(cleanpath)
 
 include(CheckIncludeFile)
+include(CheckSymbolExists)
 include(CTest)
 
 set(CMAKE_C_STANDARD 99)
@@ -9,11 +10,19 @@ set(LIB_SOURCES lib/cleanpath.c)
 set(MAIN_SOURCES src/main.c)
 set(LIB_INCLUDES include/cleanpath/cleanpath.h)
 
+check_symbol_exists(confstr "unistd.h" HAVE_CONFSTR)
+
 configure_file ("${PROJECT_SOURCE_DIR}/config.h.in"
                 "${PROJECT_BINARY_DIR}/include/config.h")
 
 include_directories(${PROJECT_BINARY_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/include)
+
+if(MSVC)
+    add_compile_options(/W4)
+else()
+    add_compile_options(-Wall -Wextra)
+endif()
 
 enable_testing()
 add_subdirectory(tests)

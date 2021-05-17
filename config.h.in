@@ -1,6 +1,6 @@
 #ifndef CLEAN_PATH_CONFIG_H
 #define CLEAN_PATH_CONFIG_H
 
-// Reserved for later use
+#cmakedefine HAVE_CONFSTR @HAVE_CONFSTR@
 
 #endif

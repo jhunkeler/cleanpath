@@ -30,7 +30,7 @@ char *modes_str[MAX_MODE] = {
 
 const char *inputs[MAX_MODE][MAX_PART][MAX_RECORD] = {
     {   // Filter exact
-        "/opt/local/bin",
+        {"/opt/local/bin",
         "/opt/local/sbin",
         "/usr/local/bin",
         "/usr/bin",
@@ -39,16 +39,16 @@ const char *inputs[MAX_MODE][MAX_PART][MAX_RECORD] = {
         "/sbin",
         "/opt/X11/bin",
         "/Library/Apple/usr/bin",
-        NULL
+        NULL}
     },
     {   // Filter loose
-        "bin",
-        NULL
+        {"bin",
+        NULL}
     },
 #if !OS_WINDOWS
     {   // Filter regex
-        ".*",
-        NULL
+        {".*",
+        NULL}
     },
 #endif
 };
