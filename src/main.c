@@ -266,7 +266,12 @@ int main(int argc, char *argv[], char *arge[]) {
                 show_listing(path);
             } else {
                 char *data = get_path(path);
-                printf("%s='%s'\n", key, data);
+                if (!strlen(path->data)) {
+                    printf("unset %s\n", key);
+
+                } else {
+                    printf("%s='%s'\n", key, data);
+                }
                 free(data);
             }
             free(key);
