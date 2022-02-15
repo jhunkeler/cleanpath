@@ -109,22 +109,24 @@ char *cleanpath_read(struct CleanPath *path) {
         goto cleanpath_read__failure;
     }
 
-    for (part_count = 0; part_count < CLEANPATH_PART_MAX && path->part[part_count] != NULL; part_count++);
+    for (part_count = 0; path->part[part_count] != NULL; part_count++) {
+        if (!strlen(path->part[part_count]))
+            continue;
+    }
 
-    for (size_t i = 0; i < CLEANPATH_PART_MAX && path->part[i] != NULL; i++) {
+    for (size_t i = 0; i < part_count; i++) {
         // Ignore filtered paths
-        if (*path->part[i] == '\0') {
+        if (!strlen(path->part[i])) {
             continue;
         }
         strcat(result, path->part[i]);
-        if (part_count > 1 && i == 0) {
+        if (i == part_count - 1)
             continue;
-        }
         strcat(result, path->sep);
     }
 
     result_len = strlen(result);
-    if (result_len) {
+    if (result_len && !strcmp(&result[result_len - 1], path->sep)) {
         result[result_len - 1] = '\0';
     }
 
