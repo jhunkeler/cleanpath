@@ -102,11 +102,14 @@ void cleanpath_filter(struct CleanPath *path, unsigned mode, const char *pattern
 char *cleanpath_read(struct CleanPath *path) {
     char *result;
     size_t result_len;
+    size_t part_count;
 
     result = calloc(path->data_len, sizeof(char));
     if (result == NULL) {
         goto cleanpath_read__failure;
     }
+
+    for (part_count = 0; part_count < CLEANPATH_PART_MAX && path->part[part_count] != NULL; part_count++);
 
     for (size_t i = 0; i < CLEANPATH_PART_MAX && path->part[i] != NULL; i++) {
         // Ignore filtered paths
@@ -114,6 +117,9 @@ char *cleanpath_read(struct CleanPath *path) {
             continue;
         }
         strcat(result, path->part[i]);
+        if (part_count > 1 && i == 0) {
+            continue;
+        }
         strcat(result, path->sep);
     }
 

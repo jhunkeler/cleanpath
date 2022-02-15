@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 #include "config.h"
 #include "cleanpath/cleanpath.h"
 
@@ -14,6 +13,9 @@
 
 // Global program path
 static char *program;
+
+// Global runtime environment
+static char **environ;
 
 int is_valid_arg(char **args, char *s) {
     int match;
@@ -35,8 +37,20 @@ int is_valid_arg(char **args, char *s) {
 }
 
 char *getenv_ex(char *s) {
+    char *key, *key_end;
     char *env_var;
-    env_var = getenv(s);
+    key = strdup(s);
+    if (!key) {
+        return NULL;
+    }
+
+    key_end = strchr(key, '=');
+    if (key_end) {
+        *key_end = '\0';
+    }
+    env_var = getenv(key);
+    free(key);
+
     if (!env_var || !strlen(env_var)) {
         return NULL;
     }
@@ -75,6 +89,12 @@ static int show_default_path() {
     return 0;
 }
 
+char *get_path(struct CleanPath *path) {
+    char *result;
+    result = cleanpath_read(path);
+    return result;
+}
+
 void show_path(struct CleanPath *path) {
     char *result;
 
@@ -95,11 +115,12 @@ static void show_usage() {
     char *bname;
     bname = strrchr(program, '/');
 
-    printf("usage: %s [-hVDelrsv] [pattern ...]\n", bname ? bname + 1 : program);
+    printf("usage: %s [-hVDAelrsEv] [pattern ...]\n", bname ? bname + 1 : program);
     printf("  --help       -h    Displays this help message\n");
     printf("  --version    -V    Displays the program's version\n");
     printf("  --default    -D    Displays default operating system PATH " CLEANPATH_MSG_NO_DEFAULT_PATH "\n");
     printf("  --list             Format output as a list\n");
+    printf("  --all        -A    Apply to all environment variables\n");
     printf("  --exact      -e    Filter when pattern is an exact match (default)\n");
     printf("  --loose      -l    Filter when any part of the pattern matches\n");
     printf("  --regex      -r    Filter matches with (Extended) Regular Expressions " CLEANPATH_MSG_NO_REGEX "\n");
@@ -107,10 +128,12 @@ static void show_usage() {
     printf("  --env [str]  -E    Use custom environment variable (default: PATH)\n");
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[], char *arge[]) {
+    environ = arge;
     struct CleanPath *path;
     char *sep;
     char *sys_var;
+    int do_all_sys_vars;
     int do_listing;
     int do_default_path;
     int filter_mode;
@@ -131,6 +154,7 @@ int main(int argc, char *argv[]) {
             "--version", "-V",
             "--list",
             "--default", "-D",
+            "--all", "-A",
             "--exact", "-e",
             "--loose", "-l",
             "--regex", "-r",
@@ -154,6 +178,9 @@ int main(int argc, char *argv[]) {
         }
         if (ARGM("--list")) {
             do_listing = 1;
+        }
+        if (ARGM("--all") || ARGM("-A")) {
+            do_all_sys_vars = 1;
         }
         if (ARGM("--default") || ARGM("-D")) {
             do_default_path = 1;
@@ -207,25 +234,56 @@ int main(int argc, char *argv[]) {
     }
 
     // Initialize path data
-    path = cleanpath_init(sys_var, sep);
-    if (path == NULL) {
-        exit(1);
-    }
+    if (do_all_sys_vars) {
+        for (size_t i = 0; environ[i] != NULL; i++) {
+            char *var = getenv_ex(environ[i]);
+            path = cleanpath_init(var, sep);
+            if (path == NULL) {
+                exit(1);
+            }
 
-    // Remove patterns from sys_var
-    for (size_t i = 0; i < CLEANPATH_PART_MAX && pattern[i] != NULL; i++) {
-        cleanpath_filter(path, filter_mode, pattern[i]);
-    }
+            char *key = strdup(environ[i]);
+            char *key_end = strchr(key, '=');
+            if (key_end) {
+                *key_end = '\0';
+            }
+            // Remove patterns from sys_var
+            for (size_t p = 0; p < CLEANPATH_PART_MAX && pattern[p] != NULL; p++) {
+                cleanpath_filter(path, filter_mode, pattern[p]);
+            }
 
-    // Print filtered result
-    if (do_listing) {
-        show_listing(path);
+            // Print filtered result
+            if (do_listing) {
+                show_listing(path);
+            } else {
+                char *data = get_path(path);
+                printf("%s='%s'\n", key, data);
+                free(data);
+            }
+            free(key);
+            free(path);
+        }
     } else {
-        show_path(path);
-    }
+        path = cleanpath_init(sys_var, sep);
+        if (path == NULL) {
+            exit(1);
+        }
 
-    // Clean up
-    cleanpath_free(path);
+        // Remove patterns from sys_var
+        for (size_t i = 0; i < CLEANPATH_PART_MAX && pattern[i] != NULL; i++) {
+            cleanpath_filter(path, filter_mode, pattern[i]);
+        }
+
+        // Print filtered result
+        if (do_listing) {
+            show_listing(path);
+        } else {
+            show_path(path);
+        }
+
+        // Clean up
+        cleanpath_free(path);
+    }
 
     return 0;
 }

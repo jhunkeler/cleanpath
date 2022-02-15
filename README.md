@@ -18,14 +18,15 @@ $ make install
 # Usage
 
 ```shell
-usage: cleanpath [-hVelrsE] [pattern ...]
+usage: cleanpath [-hVDAelrsEv] [pattern ...]
   --help       -h    Displays this help message
   --version    -V    Displays the program's version
-  --default    -D    Displays default operating system PATH
+  --default    -D    Displays default operating system PATH 
   --list             Format output as a list
+  --all        -A    Apply to all environment variables
   --exact      -e    Filter when pattern is an exact match (default)
   --loose      -l    Filter when any part of the pattern matches
-  --regex      -r    Filter matches with (Extended) Regular Expressions
+  --regex      -r    Filter matches with (Extended) Regular Expressions 
   --sep [str]  -s    Use custom path separator (default: ':')
   --env [str]  -E    Use custom environment variable (default: PATH)
 ```
@@ -73,4 +74,12 @@ a:b/e:f
 # Remove MacPorts and Fink
 PATH=$(cleanpath -r '^/opt/local/.*' '^/opt/sw/.*')
 export PATH
+```
+
+## Using cleanpath to filter your entire runtime environment
+
+```shell
+#!/usr/bin/env bash
+# Remove MacPorts and Fink from ALL environment variables
+eval $(cleanpath -A -r '^/opt/local/.*' '^/opt/sw/.*')
 ```
