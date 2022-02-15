@@ -247,6 +247,14 @@ int main(int argc, char *argv[], char *arge[]) {
             if (key_end) {
                 *key_end = '\0';
             }
+
+            // Don't touch exported functions
+            if (!strncmp(key, "BASH_FUNC_", strlen("BASH_FUNC_")) || !strncmp(path->data, "()", strlen("()"))) {
+                free(path);
+                free(key);
+                continue;
+            }
+
             // Remove patterns from sys_var
             for (size_t p = 0; p < CLEANPATH_PART_MAX && pattern[p] != NULL; p++) {
                 cleanpath_filter(path, filter_mode, pattern[p]);
