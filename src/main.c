@@ -234,6 +234,9 @@ int main(int argc, char *argv[], char *arge[]) {
         sys_var = getenv_ex(CLEANPATH_VAR);
     }
 
+    char *deferred[1024] = {0};
+    size_t dcount = 0;
+
     // Initialize path data
     if (do_all_sys_vars) {
         for (size_t i = 0; environ[i] != NULL; i++) {
@@ -266,9 +269,9 @@ int main(int argc, char *argv[], char *arge[]) {
                 show_listing(path);
             } else {
                 char *data = get_path(path);
-                if (!strlen(path->data)) {
-                    printf("unset %s\n", key);
-
+                if (strlen(path->data) == 0 && dcount < sizeof(deferred) / sizeof(*deferred)) {
+                    deferred[dcount] = strdup(key);
+                    dcount++;
                 } else {
                     printf("%s='%s'\n", key, data);
                 }
@@ -276,6 +279,11 @@ int main(int argc, char *argv[], char *arge[]) {
             }
             free(key);
             free(path);
+        }
+
+        for (size_t i = 0; i < dcount; i++) {
+            printf("unset %s\n", deferred[i]);
+            free(deferred[i]);
         }
     } else {
         path = cleanpath_init(sys_var, sep);
