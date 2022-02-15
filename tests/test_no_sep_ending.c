@@ -14,6 +14,5 @@ int main() {
     cleanpath_free(path);
 
     len = strlen(result);
-    puts(result);
     myassert(len && *(result + (len - 1)) != TEST_SEP[0], "Result ends with a separator:\n'%s'", result);
 }

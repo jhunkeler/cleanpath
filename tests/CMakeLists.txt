@@ -26,6 +26,7 @@ endforeach()
 # reason environment variables defined here are not passed on to child
 # processes.
 set(TEST_SETUP -E TESTVAR)
+set(TEST_SETUP_ALL --all)
 
 if(WIN32)
     set(TEST_SETUP ${TEST_SETUP}_WIN)
@@ -40,9 +41,9 @@ else()
 	add_test(cmd_arg_exact ${exec} ${TEST_SETUP} --exact /usr/bin)
 	add_test(cmd_arg_loose ${exec} ${TEST_SETUP} --loose /usr/bin)
 	add_test(cmd_arg_regex ${exec} ${TEST_SETUP} --regex /usr/bin)
-	add_test(cmd_arg_all_exact ${exec} ${TEST_SETUP} --all --exact /usr/bin)
-	add_test(cmd_arg_all_loose ${exec} ${TEST_SETUP} --all --loose /usr/bin)
-	add_test(cmd_arg_all_regex ${exec} ${TEST_SETUP} --all --regex /usr/bin)
+	add_test(cmd_arg_all_exact ${exec} ${TEST_SETUP_ALL} --exact /usr/bin)
+	add_test(cmd_arg_all_loose ${exec} ${TEST_SETUP_ALL} --loose /usr/bin)
+	add_test(cmd_arg_all_regex ${exec} ${TEST_SETUP_ALL} --regex /usr/bin)
 endif()
 
 add_test(cmd_arg_help ${exec} --help)
