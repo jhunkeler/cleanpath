@@ -143,6 +143,7 @@ int main(int argc, char *argv[], char *arge[]) {
     program = argv[0];
     sys_var = NULL;
     sep = CLEANPATH_SEP;
+    do_all_sys_vars = 0;
     do_listing = 0;
     do_default_path = 0;
     filter_mode = CLEANPATH_FILTER_NONE;
