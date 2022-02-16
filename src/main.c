@@ -121,6 +121,7 @@ static void show_usage() {
     printf("  --default    -D    Displays default operating system PATH " CLEANPATH_MSG_NO_DEFAULT_PATH "\n");
     printf("  --list             Format output as a list\n");
     printf("  --all        -A    Apply to all environment variables\n");
+    printf("  --all-list         Format --all output as a list");
     printf("  --exact      -e    Filter when pattern is an exact match (default)\n");
     printf("  --loose      -l    Filter when any part of the pattern matches\n");
     printf("  --regex      -r    Filter matches with (Extended) Regular Expressions " CLEANPATH_MSG_NO_REGEX "\n");
@@ -135,6 +136,7 @@ int main(int argc, char *argv[], char *arge[]) {
     char *sys_var;
     int do_all_sys_vars;
     int do_listing;
+    int do_listing_all_sys_vars;
     int do_default_path;
     int filter_mode;
     size_t pattern_nelem;
@@ -145,6 +147,7 @@ int main(int argc, char *argv[], char *arge[]) {
     sep = CLEANPATH_SEP;
     do_all_sys_vars = 0;
     do_listing = 0;
+    do_listing_all_sys_vars = 0;
     do_default_path = 0;
     filter_mode = CLEANPATH_FILTER_NONE;
     pattern_nelem = 0;
@@ -156,6 +159,7 @@ int main(int argc, char *argv[], char *arge[]) {
             "--list",
             "--default", "-D",
             "--all", "-A",
+            "--all-list",
             "--exact", "-e",
             "--loose", "-l",
             "--regex", "-r",
@@ -182,6 +186,10 @@ int main(int argc, char *argv[], char *arge[]) {
         }
         if (ARGM("--all") || ARGM("-A")) {
             do_all_sys_vars = 1;
+        }
+        if (ARGM("--all-list")) {
+            do_all_sys_vars = 1;
+            do_listing_all_sys_vars = 1;
         }
         if (ARGM("--default") || ARGM("-D")) {
             do_default_path = 1;
@@ -273,7 +281,10 @@ int main(int argc, char *argv[], char *arge[]) {
                     deferred[dcount] = strdup(key);
                     dcount++;
                 } else {
-                    printf("%s='%s'\n", key, data);
+                    printf("%s='%s'; ", key, data);
+                    if (do_listing_all_sys_vars) {
+                        puts("");
+                    }
                 }
                 free(data);
             }
@@ -282,7 +293,10 @@ int main(int argc, char *argv[], char *arge[]) {
         }
 
         for (size_t i = 0; i < dcount; i++) {
-            printf("unset %s\n", deferred[i]);
+            printf("unset %s; ", deferred[i]);
+            if (do_listing_all_sys_vars) {
+                puts("");
+            }
             free(deferred[i]);
         }
     } else {
