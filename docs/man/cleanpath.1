@@ -33,6 +33,14 @@ No other arguments are honored and no filtering will occur.
 \f[B]--list\f[R]
 Format output as a list
 .TP
+\f[B]--all\f[R]
+Apply to all environment variables. This output mode is suitable for
+the \f[B]eval\f[R] command.
+.TP
+\f[B]--all-list\f[R]
+Apply to all environment variables. This output mode is suitable for
+the \f[B]source\f[R] command.
+.TP
 \f[B]-e\f[R], \f[B]--exact\f[R]
 Filter when pattern is an exact match (default)
 .TP
@@ -109,6 +117,10 @@ PATH=\[lq]/usr/local/bin:/usr/bin:/bin\[rq]
 PATH=\[lq]$(cleanpath -l /usr/local)\[rq]; export PATH
 .PP
 # /usr/local/bin has been filtered from PATH
+.PP
+eval $(cleanpath -A -l /usr/local)
+.PP
+# /usr/local has been removed from the runtime environment
 .SH ERRORS
 .PP
 \f[B]cleanpath\f[R] will exit non-zero (>0) when an error occurs.
