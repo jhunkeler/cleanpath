@@ -17,13 +17,14 @@ $ make install
 
 # Usage
 
-```shell
+```text
 usage: cleanpath [-hVDAelrsEv] [pattern ...]
   --help       -h    Displays this help message
   --version    -V    Displays the program's version
   --default    -D    Displays default operating system PATH 
   --list             Format output as a list
   --all        -A    Apply to all environment variables
+  --all-list         Format --all output as a list
   --exact      -e    Filter when pattern is an exact match (default)
   --loose      -l    Filter when any part of the pattern matches
   --regex      -r    Filter matches with (Extended) Regular Expressions 
