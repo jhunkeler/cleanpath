@@ -103,16 +103,22 @@ char *cleanpath_read(struct CleanPath *path) {
     char *result;
     size_t result_len;
     size_t part_count;
+    size_t empty;
 
     result = calloc(path->data_len, sizeof(char));
     if (result == NULL) {
         goto cleanpath_read__failure;
     }
 
+    // Update number of elements in the path post-filter
+    empty = 0;
     for (part_count = 0; path->part[part_count] != NULL; part_count++) {
-        if (!strlen(path->part[part_count]))
+        if (!strlen(path->part[part_count])) {
+            empty++;
             continue;
+        }
     }
+    path->part_nelem = part_count - empty;
 
     for (size_t i = 0; i < part_count; i++) {
         // Ignore filtered paths

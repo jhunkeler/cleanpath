@@ -249,8 +249,13 @@ int main(int argc, char *argv[], char *arge[]) {
     if (do_all_sys_vars) {
         for (size_t i = 0; environ[i] != NULL; i++) {
             char *var = getenv_ex(environ[i]);
+            if (!var) {
+                continue;
+            }
+
             path = cleanpath_init(var, sep);
             if (path == NULL) {
+                fprintf(stderr, "Unexpected error. Invalid data consumed by cleanpath_init(\"%s\", \"%s\")\n", environ[i], sep);
                 exit(1);
             }
 
@@ -276,8 +281,8 @@ int main(int argc, char *argv[], char *arge[]) {
             if (do_listing) {
                 show_listing(path);
             } else {
-                char *data = get_path(path);
-                if (strlen(path->data) == 0 && dcount < sizeof(deferred) / sizeof(*deferred)) {
+                char *data = cleanpath_read(path);
+                if (!path->part_nelem && dcount < sizeof(deferred) / sizeof(*deferred)) {
                     deferred[dcount] = strdup(key);
                     dcount++;
                 } else {
