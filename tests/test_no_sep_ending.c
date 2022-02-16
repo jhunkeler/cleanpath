@@ -15,4 +15,5 @@ int main() {
 
     len = strlen(result);
     myassert(len && *(result + (len - 1)) != TEST_SEP[0], "Result ends with a separator:\n'%s'", result);
+    free(result);
 }
