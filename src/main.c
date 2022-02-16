@@ -262,7 +262,7 @@ int main(int argc, char *argv[], char *arge[]) {
 
             // Don't touch exported functions
             if (!strncmp(key, "BASH_FUNC_", strlen("BASH_FUNC_")) || !strncmp(path->data, "()", strlen("()"))) {
-                free(path);
+                cleanpath_free(path);
                 free(key);
                 continue;
             }
@@ -289,7 +289,7 @@ int main(int argc, char *argv[], char *arge[]) {
                 free(data);
             }
             free(key);
-            free(path);
+            cleanpath_free(path);
         }
 
         for (size_t i = 0; i < dcount; i++) {
