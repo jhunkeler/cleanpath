@@ -121,7 +121,7 @@ static void show_usage() {
     printf("  --default    -D    Displays default operating system PATH " CLEANPATH_MSG_NO_DEFAULT_PATH "\n");
     printf("  --list             Format output as a list\n");
     printf("  --all        -A    Apply to all environment variables\n");
-    printf("  --all-list         Format --all output as a list");
+    printf("  --all-list         Format --all output as a list\n");
     printf("  --exact      -e    Filter when pattern is an exact match (default)\n");
     printf("  --loose      -l    Filter when any part of the pattern matches\n");
     printf("  --regex      -r    Filter matches with (Extended) Regular Expressions " CLEANPATH_MSG_NO_REGEX "\n");
