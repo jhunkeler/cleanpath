@@ -15,7 +15,7 @@
 static char *program;
 
 // Global runtime environment
-static char **environ;
+static char **runtime;
 
 int is_valid_arg(char **args, char *s) {
     int match;
@@ -130,7 +130,7 @@ static void show_usage() {
 }
 
 int main(int argc, char *argv[], char *arge[]) {
-    environ = arge;
+    runtime = arge;
     struct CleanPath *path;
     char *sep;
     char *sys_var;
@@ -247,19 +247,19 @@ int main(int argc, char *argv[], char *arge[]) {
 
     // Initialize path data
     if (do_all_sys_vars) {
-        for (size_t i = 0; environ[i] != NULL; i++) {
-            char *var = getenv_ex(environ[i]);
+        for (size_t i = 0; runtime[i] != NULL; i++) {
+            char *var = getenv_ex(runtime[i]);
             if (!var) {
                 continue;
             }
 
             path = cleanpath_init(var, sep);
             if (path == NULL) {
-                fprintf(stderr, "Unexpected error. Invalid data consumed by cleanpath_init(\"%s\", \"%s\")\n", environ[i], sep);
+                fprintf(stderr, "Unexpected error. Invalid data consumed by cleanpath_init(\"%s\", \"%s\")\n", runtime[i], sep);
                 exit(1);
             }
 
-            char *key = strdup(environ[i]);
+            char *key = strdup(runtime[i]);
             char *key_end = strchr(key, '=');
             if (key_end) {
                 *key_end = '\0';
