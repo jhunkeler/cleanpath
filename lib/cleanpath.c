@@ -88,8 +88,12 @@ void cleanpath_filter(struct CleanPath *path, unsigned mode, const char *pattern
                 break;
         }
 
-        if (match)
+        if (match) {
             *path->part[i] = '\0';
+            // Update count of unfiltered parts
+            if (path->part_nelem)
+                path->part_nelem--;
+        }
     }
 }
 
@@ -102,32 +106,18 @@ void cleanpath_filter(struct CleanPath *path, unsigned mode, const char *pattern
 char *cleanpath_read(struct CleanPath *path) {
     char *result;
     size_t result_len;
-    size_t part_count;
-    size_t empty;
 
     result = calloc(path->data_len, sizeof(char));
     if (result == NULL) {
         goto cleanpath_read__failure;
     }
 
-    // Update number of elements in the path post-filter
-    empty = 0;
-    for (part_count = 0; path->part[part_count] != NULL; part_count++) {
-        if (!strlen(path->part[part_count])) {
-            empty++;
-            continue;
-        }
-    }
-    path->part_nelem = part_count - empty;
-
-    for (size_t i = 0; i < part_count; i++) {
+    for (size_t i = 0; path->part[i] != NULL; i++) {
         // Ignore filtered paths
         if (!strlen(path->part[i])) {
             continue;
         }
         strcat(result, path->part[i]);
-        if (i == part_count - 1)
-            continue;
         strcat(result, path->sep);
     }
 
