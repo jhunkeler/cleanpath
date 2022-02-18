@@ -17,7 +17,7 @@ static char *program;
 // Global runtime environment
 static char **runtime;
 
-int is_valid_arg(char **args, char *s) {
+static int is_valid_arg(char **args, char *s) {
     int match;
 
     match = 0;
@@ -36,7 +36,7 @@ int is_valid_arg(char **args, char *s) {
     return match;
 }
 
-char *getenv_ex(char *s) {
+static char *getenv_ex(char *s) {
     char *key, *key_end;
     char *env_var;
     key = strdup(s);
@@ -57,11 +57,10 @@ char *getenv_ex(char *s) {
     return env_var;
 }
 
-void show_listing(struct CleanPath *path) {
-    if (path == NULL) {
-        return;
+static void show_listing(struct CleanPath *path, const char *key) {
+    if (key) {
+        printf("# %s\n", key);
     }
-
     for (size_t i = 0; i < CLEANPATH_PART_MAX && path->part[i] != NULL; i++) {
         if (*path->part[i] == '\0') {
             continue;
@@ -89,13 +88,7 @@ static int show_default_path() {
     return 0;
 }
 
-char *get_path(struct CleanPath *path) {
-    char *result;
-    result = cleanpath_read(path);
-    return result;
-}
-
-void show_path(struct CleanPath *path) {
+static void show_path(struct CleanPath *path) {
     char *result;
 
     result = cleanpath_read(path);
@@ -279,7 +272,7 @@ int main(int argc, char *argv[], char *arge[]) {
 
             // Print filtered result
             if (do_listing) {
-                show_listing(path);
+                show_listing(path, key);
             } else {
                 char *data = cleanpath_read(path);
                 if (!path->part_nelem && dcount < sizeof(deferred) / sizeof(*deferred)) {
@@ -317,7 +310,7 @@ int main(int argc, char *argv[], char *arge[]) {
 
         // Print filtered result
         if (do_listing) {
-            show_listing(path);
+            show_listing(path, NULL);
         } else {
             show_path(path);
         }
