@@ -1,5 +1,5 @@
 CC=cc
-CFLAGS=-I. -Iinclude
+CFLAGS=-I. -Iinclude -std=gnu99
 LDFLAGS=-L.
 PREFIX=/usr/local
 SONAME=0
@@ -8,7 +8,6 @@ all: cleanpath
 
 config.h: config.h.in
 	rm -f config.h
-    # Broad assumption. Chances are you have it though if you're using this makefile instead of cmake
 	sed 's/cmakedefine/define/;s/@HAVE_CONFSTR@/1/' config.h.in > config.h.tmp
 	mv config.h.tmp config.h
 
