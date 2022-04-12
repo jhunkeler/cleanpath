@@ -240,6 +240,27 @@ int main(int argc, char *argv[], char *arge[]) {
 
     // Initialize path data
     if (do_all_sys_vars) {
+        char sh_set_delim[3];
+        char *sh_excpath;
+        char sh_set[10];
+        char sh_unset[10];
+
+        strcpy(sh_set_delim, "= ");
+        strcpy(sh_set, "");
+        strcpy(sh_unset, "unset");
+
+        sh_excpath = getenv("SHELL");
+        if (!sh_excpath) {
+            fprintf(stderr, "Unable to determine shell. $SHELL not set.\n");
+            exit(1);
+        }
+
+        if (strstr(sh_excpath, "/tcsh") || strstr(sh_excpath, "/csh")) {
+            strcpy(sh_set_delim, " ");
+            strcpy(sh_set, "setenv ");
+            strcpy(sh_unset, "unsetenv");
+        }
+
         for (size_t i = 0; runtime[i] != NULL; i++) {
             char *var = getenv_ex(runtime[i]);
             if (!var) {
@@ -279,7 +300,7 @@ int main(int argc, char *argv[], char *arge[]) {
                     deferred[dcount] = strdup(key);
                     dcount++;
                 } else {
-                    printf("%s='%s'; ", key, data);
+                    printf("%s%s%s'%s'; ", sh_set, key, sh_set_delim, data);
                     if (do_listing_all_sys_vars) {
                         puts("");
                     }
@@ -291,7 +312,7 @@ int main(int argc, char *argv[], char *arge[]) {
         }
 
         for (size_t i = 0; i < dcount; i++) {
-            printf("unset %s; ", deferred[i]);
+            printf("%s %s; ", sh_unset, deferred[i]);
             if (do_listing_all_sys_vars) {
                 puts("");
             }
