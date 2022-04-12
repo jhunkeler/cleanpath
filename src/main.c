@@ -245,7 +245,7 @@ int main(int argc, char *argv[], char *arge[]) {
         char sh_set[10];
         char sh_unset[10];
 
-        strcpy(sh_set_delim, "= ");
+        strcpy(sh_set_delim, "=");
         strcpy(sh_set, "");
         strcpy(sh_unset, "unset");
 
