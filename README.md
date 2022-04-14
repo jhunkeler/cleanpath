@@ -11,6 +11,7 @@
 $ git clone https://github.com/jhunkeler/cleanpath
 $ cd cleanpath
 $ mkdir -p build
+$ cd build
 $ cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/.local
 $ make install
 ```
