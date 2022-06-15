@@ -39,6 +39,10 @@ static int is_valid_arg(char **args, char *s) {
 static char *getenv_ex(char *s) {
     char *key, *key_end;
     char *env_var;
+    if (!s) {
+        return NULL;
+    }
+
     key = strdup(s);
     if (!key) {
         return NULL;
@@ -205,12 +209,17 @@ int main(int argc, char *argv[], char *arge[]) {
         if (ARGM("--sep") || ARGM("-s")) {
             i++;
             sep = argv[i];
+            if (!sep) {
+                fprintf(stderr, "%s requires an argument\n", argv[i - 1]);
+                exit(1);
+            }
             continue;
         }
         if (ARGM("--env") || ARGM("-E")) {
             i++;
             sys_var = getenv_ex(argv[i]);
             if (!sys_var) {
+                fprintf(stderr, "%s requires an argument\n", argv[i - 1]);
                 exit(1);
             }
             continue;
