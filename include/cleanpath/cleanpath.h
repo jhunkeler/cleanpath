@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CLEANPATH_VERSION "1.1.0"
+#define CLEANPATH_VERSION "1.1.1"
 #define CLEANPATH_FILTER_NONE -1
 #define CLEANPATH_FILTER_EXACT 0
 #define CLEANPATH_FILTER_LOOSE 1
